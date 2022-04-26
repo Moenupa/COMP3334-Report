@@ -1,0 +1,39 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{a4wide}
+\usepackage[pdftex,scale={.8,.8}]{geometry}
+\usepackage{natbib}
+\usepackage{xcolor, color}
+\usepackage{setspace}
+\usepackage{minted}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{fancyhdr}%to set headers
+\usepackage{tikz}
+
+\title{\textbf{COMP3334 Group Project Report}}
+\author{JIANG Ruixiang, WANG Meng, XING Shiji, ZHANG Yubo}
+\date{\today}
+\rhead{\bfserise Group 34}
+
+\newcommand{\yb}[1]{\textcolor{blue}{\bf\small [#1 - yb]}}
+\newcommand{\rx}[1]{\textcolor{red}{\bf\small [#1 - rx]}}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\clearpage
+\onehalfspacing
+\pagestyle{fancy}
+\input{sections/abs}
+\input{sections/security_req}
+\input{sections/literature_review}
+\input{sections/sys_design}
+\input{sections/sys_install}
+\input{sections/cases}
+
+\newpage
+\bibliographystyle{ieeetr}
+\bibliography{ref}
+\end{document}

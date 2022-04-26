@@ -1,0 +1,28 @@
+\section{A literature review of similar systems in the market}
+
+
+In this section, we review the similar system in the market. We will first classify the similar system into three categories based on the server architecture, and then we will give a case study to a specific similar system.
+
+\subsection{Overview of the similar system in the market}
+An digital artwork platform in a larger sense is a Web application. Therefore, there mainly exists three possible server architectures: point-to-point (P2P), Centralized and Distributed.
+\begin{enumerate}
+\item P2P: point-to-point architecture generally means clients could directly communicate with each other. In such systems, each client is also a server, and each server is also a client. The strength of P2P is that there is no centralized server, reducing the likelihood of single-point information leak. Also, since the data is not processed by an intermediate server, it could be easier to implement the security mechanism. However, it would be a challenge to view others' artwork without a server. To the best of our knowledge, there is no such digital art system in the market.
+\item Centralized: centralized architecture generally means that there is a centralized server (logically), which is responsible for processing data and communicate with all clients. This is the most common architecture for Web applications. The benefits of centralized architecture are that it is easy to implement and maintain the system. However, it also means that the system is more vulnerable to attack and single-point failure. Moreover, it also means the system admin has full control of the system. Examples of such digital art systems include DeviantArt \cite{deviantart}, Pixiv \cite{crypto}.
+
+\item Distributed: distributed architecture generally means that there are multiple servers, and there is usually redundancy between the servers. Note that a centralized server could have distributed server physically, and we do not consider this case. While there are a lot of ways to achieve de-centralization, we focus on the blockchain-based (i.e., NFT). Basically, NFTs store the metadata on the chain and store the art content off-the chain. The advantage is that blockchain is a fully decentralized system, which intrinsically provides a secure and reliable system against third-party modification. The disadvantage include the off-chain storage, which suffers from the cost of storage and the difficulty of finding the data. In addition, the blockchain itself is not a scalable system, which means that the system is not able to handle the large amount of data. Examples of such digital art systems include Quantum \cite{quantum}, Crypto\cite{crypto}.
+
+\end{enumerate}
+
+\subsection{Case study of a similar system }
+Although it is not compulsory to use NFT / Blockchain as the means for building up our system, NFT marketplace is a kind of system that is most similar to our system, so we look closely into one of the largest marketplaces in the world: OpenSea\footnote{\url{https://opensea.io/}}.
+
+OpenSea is the world's first and largest NFT marketplace. Besides the functionalities of a online shop, the website also provides mechanisms to store and protect the artworks uploaded, which is related to the security. The underlying security mechanisms (or contracts) of NFTs is implemented with OpenZippelin, which provides security products to build, automate, and operate decentralized applications, and is he standard for secure blockchain applications. OpenZippelin is written in solidity, which is a library in Node JS.
+
+The basic of the contracts is the block chain. By its nature, since all transcations(editions) will be recorded, block chain can prevent secret tampering. Therefore, the important factor is to build a contract that guarantee that only legit editions can be made to the block chain, which is authentication. OpenZeppelin provides a comprehensive standard template of contract, namely ERC721 for users to implement. By properly implementing this template, user can fulfill basic functionalities security requirements of an NFT.
+
+Besides, there are few points stressed when implementing an contract:
+\begin{itemize}
+    \item All information is public in a contract, even when marked private.
+    \item Any interaction from a contract (A) with another contract (B) and any transfer of Ether hands over control to that contract (B).
+    \item The call stack size has a limit of 1024. Recursive methods should be called with caution.
+\end{itemize}

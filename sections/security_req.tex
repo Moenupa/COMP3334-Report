@@ -1,0 +1,54 @@
+\section{Security Requirement Analysis with Justifications}
+We analyze the security requirements for a digital art platform in this section. C.I.A (Confidentiality, Integrity, Availability) model will be applied with specific justifications, along with several suggestions of security mechanism to be adopted in practice.
+
+\subsection{Confidentiality}\label{sec:confiden}
+
+Before diving deep into discussions about the details of security mechanism on confidentiality, it is necessary to check what should be kept secure in an artwork platform. For an artwork platform that aims to provide functions including representing, storing and exchanging digital artwork, it is important to keep the following information secure:
+
+\begin{enumerate}
+\item The artwork's metadata (esp. ownership), the artwork's digital signature (if any).
+\item The transaction record.
+\item User's account information.
+\item Communication between the platform and the user.
+\end{enumerate}
+
+It should be noted that the content of the artwork itself is not considered as confidential information. This is because it would be impossible to keep the content of the artwork confidential, if the platform is designed to be used by the public. Such principle is seen in NFT-based digital assets \citep{daniele_2021}, where the artwork content is stored off-chain. However, for non-NFT platforms, this idea is also applicable.
+
+
+What really matters in digital art system is to keep the metadata secure. The metadata includes, but is not limited to: 1: the artwork's ownership, 2: the pointer to the artwork's content. Amongst these, the ownership information is the most important one. The system should provide a mechanism to uniquely identify the ownership of an art-work, such that every user could easily check the ownership of that art work. The ownership field should also be editable, such that user could exchange artworks. Such ownership identification functions are pivotal in digital art platform and must be kept secure in a specific way. For block-chain based application, it would not be a big issue. But for system that adopt a centralized server, they must come up with a way to securely store the ownership information. In practice, it could be achieved by using a digital signature. The owner could use a private key to sign the metadata, and the platform could use a public key to verify the signature. The digital signature is a mechanism to ensure that the metadata is not tampered with.
+
+Beside ownership information, the pointer to the artwork also need additional security protection. In practice, the pointer could be a link to the artwork, which does not necessarily to be kept secrete. However, they must not be modified by third-parties. Details would be covered in the next section on integrity.
+
+\subsection{Integrity}\label{sec:integrity}
+
+Integrity in the context of digital art platform could be defined as the following:
+
+\begin{enumerate}
+\item The artwork's content is not modified, either partially or re-directed to another one.
+\item The ownership information is not modified by third-parties.
+\item The communication between the platform and the user is not modified.
+\item The communication between the platform and other service server is not modified.
+\item The communication is from the original source.
+\item The data stored in the platform is not modified by third-parties.
+\end{enumerate}
+
+For system that store artworks locally, they ought to both prevent from third-party modification and perform integrity checking. The first one usually means the server should not be accessible by any third-parties. By contrast, when the artwork content is stored in the cloud (include block-chain based), it would be impractical to only rely on the security of the cloud service provider. In such case, a better solution is to assume that the artwork content could be modified, and provide a way to check the integrity of the artwork. In practice, the platform could pre-compute the hash of the artwork content, and store it in the metadata local server. The platform could then check the hash of the artwork content when it is requested. 
+
+For the metadata, it must be stored on a trust-worthy server (which again depends on the security assumption and architecture). The reason is that they carry sensitive information such as ownership. Even if the server is trustable, they still should be encrypted using either symmetric or asymmetric encryption. The ownership should not be modified by third-parties, but it should be made public, so that the user could easily check the ownership, which suggests that asymmetric encryption is a good solution. As for the pointer to the artwork content, it should not be modified by third-parties, and ideally not accessible by the public. For other data, the encryption mechanism should be chosen based on the security assumption and the size of the metadata. In general, an AES encryption is sufficient for the metadata. Although encryption does not prevent modification, it does provide a way to check if the data has been modified or not.
+
+Apart from integrity of the content, the integrity in communication between each part of the system is also important. For example, the content of communication between the platform and the user should be kept original. This both means the data send to and from the server. For web-based system, there exist various solutions to achieve this security requirements. For example, a lot of Web frameworks support authentication mechanism, and integrity of communication content could be achieved by SSL and TLS. For other means of communication, there are also established standards/protocols to achieve this security requirement. For e-mail, the integrity checking and encryption of could be done by S/MIME \citep{peterson2004s} or PGP\citep{network2007openpgp}.
+
+When the data is no-longer trust-worthy, the system should take actions. For example, the system could simply rollback the whole transaction to avoid any inconsistencies. However, such naive approach may impose a limit on performance of the system if there are frequent inconsistency of data, which is common in transaction-based system. Better practices are possible, for example to temporarily accept questionable data to form different branches of the system, and choice the one that are most trust-worthy (e.g., \textit{blockchain}).
+
+
+\subsection{Availability}
+
+Availability of an artwork platform generally impose the following overlapping security requirements:
+
+\begin{enumerate}
+\item The artwork's content is available to the user.
+\item The communication between the platform and the user, if any, is available to the user.
+\item The communication between the platform and other service server , if any, is available to the user.
+\end{enumerate}
+
+The availability of the artwork content means that user can access the artwork content without any problem. We only discuss the situation where the content is stored in the cloud. In such case, the availability requirement could be decomposed into two parts: 1: the pointer to the content is correct, and 2: the transfer of the content is available. The first part is already covered in the previous section on integrity. The second part, however, is more complicated as it involves external server. To avoid the DoS attack, the system should be designed to limit the number of connections to the external server. For example, the system could use a proxy server to limit the number of connections to the external server. This also means the system should detect abnormal connections. However, it would be difficult to differentiate the normal connections from the abnormal connections, and the corresponding actions further depends on the architecture of the system. Apart from detection, the system may also consider encrypt the original pointer to the content, and only expose a 2nd-level pointer to the user.
